@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multiplication Table</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+    <div class="mx-auto mt-4 max-w-7xl space-y-4 px-4 py-4 font-serif text-lg tracking-wide text-gray-700">
+        <h1 class="text-2xl font-bold text-center mb-6">Multiplication Table</h1>
+    
+        <!-- Form for input -->
+        <form class="flex flex-col gap-4 max-w-xl mx-auto">
+            <div>
+                <label for="numberInput" class="block text-sm font-medium mb-1">Enter a number:</label>
+                <input id="numberInput" type="number" class="w-full p-2 border border-gray-300 rounded-md" required min="1">
+            </div>
+    
+            <button type="button" onclick="generateMultiplicationTable()" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
+                Generate Multiplication Table
+            </button>
+        </form>
+    
+        <!-- Display Generated Multiplication Tables -->
+        <div class="mx-auto my-10 w-full max-w-max px-5 xl:px-0" id="multiplicationTables">
+            <!-- Multiplication tables will be dynamically populated here -->
+        </div>
+    </div>
+    
+    <script>
+        function generateMultiplicationTable() {
+            const number = parseInt(document.getElementById('numberInput').value);
+            const tablesContainer = document.getElementById('multiplicationTables');
+            
+            // Clear any previous tables
+            tablesContainer.innerHTML = '';
+    
+            if (!isNaN(number) && number > 0) {
+                // Loop for creating 3 separate tables (each with a range of 10 numbers)
+                for (let j = 0; j < 3; j++) {
+                    const start = j * 5 + 1;  // 1, 11, 21
+                    const end = start + 4;     // 10, 20, 30
+                    const ends = end + 5;
+                    // Create each table for a specific range (e.g., 1-10, 11-20, 21-30)
+                    const tableDiv = document.createElement('div');
+                    tableDiv.classList.add('w-full', 'overflow-x-auto', 'mb-6'); // Add overflow for horizontal scrolling
+                    
+                    const table = document.createElement('table');
+                    table.classList.add('w-full', 'text-left', 'border', 'border-collapse', 'rounded', 'sm:border-separate', 'border-slate-200');
+                    const tableBody = document.createElement('tbody');
+
+                    const tableHeader = document.createElement('tr');
+                    tableHeader.classList.add('text-center');
+                    const headerCell = document.createElement('th');
+                    headerCell.setAttribute('colspan', '2');
+                    headerCell.classList.add('h-12', 'px-6', 'text-xl', 'font-medium', 'border-l', 'first:border-l-0', 'stroke-slate-700', 'text-slate-700', 'bg-slate-100');
+                    
+                    // Update header to match the new phrasing
+                    
+                    headerCell.textContent = `Multiplication Table Of ${number} From ${start} to ${ends}`;
+                    
+                    tableHeader.appendChild(headerCell);
+                    tableBody.appendChild(tableHeader);
+
+                    // Create 10 rows, each row containing 2 multiplication results
+                    for (let i = start; i <= end; i++) {
+                        const row = document.createElement('tr');
+                        
+                        const cell1 = document.createElement('td');
+                        cell1.classList.add('h-12', 'px-6', 'text-xl', 'transition', 'duration-300', 'border-t', 'border-l', 'first:border-l-0', 'border-slate-200', 'stroke-slate-500', 'text-slate-500');
+                        cell1.textContent = `${number} × ${i} = ${number * i}`;
+                        
+                        const cell2 = document.createElement('td');
+                        cell2.classList.add('h-12', 'px-6', 'text-xl', 'transition', 'duration-300', 'border-t', 'border-l', 'first:border-l-0', 'border-slate-200', 'stroke-slate-500', 'text-slate-500');
+                        cell2.textContent = `${number} × ${i + 5} = ${number * (i + 5)}`;
+                        
+                        row.appendChild(cell1);
+                        row.appendChild(cell2);
+                        tableBody.appendChild(row);
+                    }
+
+                    table.appendChild(tableBody);
+                    tableDiv.appendChild(table);
+                    tablesContainer.appendChild(tableDiv);
+                }
+            } else {
+                const errorMessage = document.createElement('p');
+                errorMessage.classList.add('text-center', 'text-red-500');
+                errorMessage.textContent = 'Please enter a valid number.';
+                tablesContainer.appendChild(errorMessage);
+            }
+        }
+    </script>
+</body>
+</html>
